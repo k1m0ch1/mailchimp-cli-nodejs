@@ -1,5 +1,9 @@
 require('dotenv').config()
 var request = require('request');
+var fs = require('fs');
+var config = require('E:\\Document\\Crowde\\listemail.json');
+var crypto = require('crypto');
+var sleep = require('system-sleep');
 
 const readline = require('readline');
 const log = console.log;
@@ -18,9 +22,10 @@ const notification = { 'error' : '\x1b[31m Error \x1b[0m',
 
 var idlecmd = '('+ process.env.CHIMP_API_USER +')\x1b[37m > \x1b[0m';
 var lists = { id : '', name : ''};
+var url = process.env.CHIMP_API_URL;
 
 var option = {
-	url : process.env.CHIMP_API_URL,
+	url : url,
 	headers : {'Authorization' : 'Basic ' + new Buffer(+ process.env.CHIMP_API_USER + ':' + process.env.CHIMP_API_KEY).toString('base64') }
 };
 
@@ -29,8 +34,47 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+function comparing(){
+	config.RECORDS.forEach(function(list){
+		sleep(100);
+		option.url = process.env.CHIMP_API_URL + "f4db1367e8/members/" + (list.email!=null?crypto.createHash('md5').update(list.email).digest("hex"):"");
+		request(option, function(error, response, body){
+				if(response.statusCode!=200){
+					//var hasil = JSON.parse(body);
+					//log(report.info + "email " + list.email + " " + hasil.status + " as " + hasil.email_address);
+					log(report.warning + "email " + list.email + " Tidak Terdaftar");
+					var daftar = {
+									email_address: list.email, 
+									status : "subscribed", 
+									merge_field : {
+										MMERGE3 : list.name,
+										MMERGE4 : list.birthdate,
+										MMERGE5 : list.phone,
+										MMERGE6 : list.address
+									}
+					};
+					daftar = JSON.stringify(daftar);
+					request.post({url: process.env.CHIMP_API_URL + "f4db1367e8/members/", 
+								  headers : {'Authorization' : 'Basic ' + new Buffer(+ process.env.CHIMP_API_USER + ':' + process.env.CHIMP_API_KEY).toString('base64') },
+								  form : daftar
+								}, function(e,r,b){
+									if(r.statusCode==200){
+										log(report.success, list.email + " Sukses didaftarkan");
+									}else{
+										var hasil = JSON.parse(b);
+										log(report.failed, list.email + " " + hasil.detail);
+									}
+								});
+				}
+		});
+	});
+}
+
 function perintah(){
 	rl.question(idlecmd, (hasil)=>{
+		if(hasil.toString()=="compare"){
+			setTimeout(comparing, 500);
+		}
 		hasils = hasil.split(" ");
 		if(hasils.length==1){
 			switch(hasil.toString()){
@@ -66,6 +110,20 @@ function perintah(){
 						log(report.warning + " You didn't set to any available Lists, set it first with 'list set id'");
 					}
 					break;
+				case "members":
+					if(lists.id!=''){
+						log(url.split("/")[6]);
+						url = url.split("/")[6]!="members"?url + "/members":url;
+						option.url = url;
+						request(option, function(error, response, body){
+							var result = JSON.parse(body);
+							log(result.members);
+							perintah();
+						});
+					}else{
+						log(report.warning + " You didn't set to any available Lists, set it first with 'list set id'");
+					}
+					break;
 				case "exit":
 					log(report.general + "Thanks for using this :D");
 					rl.close();
@@ -74,6 +132,8 @@ function perintah(){
 					log(report.info + "Back to root state");
 					idlecmd = '('+ process.env.CHIMP_API_USER +')\x1b[37m > \x1b[0m';
 					lists = { id : '', name : ''};
+					url = process.env.CHIMP_API_URL;
+					option.url = url;
 					perintah()
 					break;
 				default:
@@ -85,7 +145,8 @@ function perintah(){
 			if(hasils[0].toString()=="list"){
 				if(hasils[1].toString()=="set"){
 					lists.id = hasils[2];
-					option.url = process.env.CHIMP_API_URL + lists.id;
+					url = url + lists.id;
+					option.url = url;
 					request(option, function(error, response, body){
 						var result = JSON.parse(body);
 						log(report.success + "Connected to list f4db1367e8");
@@ -96,6 +157,14 @@ function perintah(){
 					log(report.error + "Command Not found, try help");
 					perintah();
 				}
+			}else if(hasils[0].toString()=="member"){
+				url = url.split("?")[0]!="offset"&&url.split("/")[6]!="members"?url + "/members?offset=" + hasils[1] + "&count=" + hasils[2]:url;
+				option.url = url;
+				request(option, function(error, response, body){
+						var result = JSON.parse(body);
+						log(result);
+						perintah();
+				});
 			}else{
 				log(report.error + "Command Not found, try help");
 				perintah();

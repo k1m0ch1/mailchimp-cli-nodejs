@@ -18,7 +18,8 @@
   "homepage": "https://github.com/k1m0ch1/mailchimp-nodejs#readme",
   "dependencies": {
     "dotenv": "^4.0.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "system-sleep": "^1.3.5"
   },
   "devDependencies": {
     "run-sequence": "^2.0.0"
