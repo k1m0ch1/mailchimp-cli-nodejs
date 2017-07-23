@@ -1,6 +1,6 @@
 # Simple Mailchimp nodejs cli
 
-Need to run by createing file `.env` with format list this :
+Need to run by creating config file `.env` with format :
 
 
 ```file
@@ -11,4 +11,4 @@ CHIMP_API_KEY= <API KEY MAICHIMP>
 
 
 
-`npm install` first and then `node run.js`
+`npm install` first and then run it with `node run.js`

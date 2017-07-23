@@ -49,8 +49,10 @@ function perintah(){
 				case "list":
 					if(lists.id ==""){
 						log(report.warning + " You didn't set to any available Lists, set it first with 'list set id'");
+						perintah();
 					}else{
-						log(report.info + " You are connected to list " + process.env.LISTS.name + " with ID " + process.env.LISTS.id );
+						log(report.info + " You are connected to list " + lists.name + " with ID " + lists.id );
+						perintah();
 					}
 					break;
 				case "stats":
