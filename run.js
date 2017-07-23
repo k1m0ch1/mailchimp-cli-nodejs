@@ -76,6 +76,21 @@ function comparing(filename){
 	perintah();
 }
 
+function cmdnf(){
+	log(report.warning + " You didn't set to any available Lists, set it first with 'list set id'");
+	perintah();
+}
+
+function getLists(list_id, namef){
+	var result = "";
+	url = process.env.CHIMP_API_URL + list_id + "/" + namef;
+	option.url = url;
+	request(option, function(e, r, b){
+		result = JSON.parse(b);
+		return result;
+	});	
+}
+
 function perintah(){
 	rl.question(idlecmd, (hasil)=>{
 		hasils = hasil.split(" ");
@@ -95,8 +110,7 @@ function perintah(){
 					break;
 				case "list":
 					if(lists.id ==""){
-						log(report.warning + " You didn't set to any available Lists, set it first with 'list set id'");
-						perintah();
+						cmdnf();
 					}else{
 						log(report.info + " You are connected to list " + lists.name + " with ID " + lists.id );
 						perintah();
@@ -110,12 +124,11 @@ function perintah(){
 							perintah();
 						});
 					}else{
-						log(report.warning + " You didn't set to any available Lists, set it first with 'list set id'");
+						cmdnf();
 					}
 					break;
 				case "members":
 					if(lists.id!=''){
-						log(url.split("/")[6]);
 						url = url.split("/")[6]!="members"?url + "/members":url;
 						option.url = url;
 						request(option, function(error, response, body){
@@ -124,7 +137,41 @@ function perintah(){
 							perintah();
 						});
 					}else{
-						log(report.warning + " You didn't set to any available Lists, set it first with 'list set id'");
+						cmdnf();
+					}
+					break;
+				case "activity":
+					if(lists.id!=''){
+						log(getLists(lists.id, "activity"));
+						perintah();
+					}else{
+						cmdnf();
+					}
+					break;
+				case "clients":
+					if(lists.id!=''){
+						url = process.env.CHIMP_API_URL + lists.id + "/clients";
+						option.url = url;
+						request(option, function(error, response, body){
+							var result = JSON.parse(body);
+							log(result);
+							perintah();
+						});
+					}else{
+						cmdnf();
+					}
+					break;
+				case "locations":
+					if(lists.id!=''){
+						url = process.env.CHIMP_API_URL + lists.id + "/locations";
+						option.url = url;
+						request(option, function(error, response, body){
+							var result = JSON.parse(body);
+							log(result);
+							perintah();
+						});
+					}else{
+						cmdnf();
 					}
 					break;
 				case "exit":
@@ -153,6 +200,25 @@ function perintah(){
 				comparing(hasils[1].toString());
 			}else if(hasils[0].toString()=="compare"){
 				comparing(hasils[1].toString());
+			}else if(hasils[0].toString()=="member"){
+				if(hasils[1].split("@").length>1){
+					var md5 = crypto.createHash('md5').update(hasils[1].toString()).digest("hex");
+					option.url = process.env.CHIMP_API_URL + lists.id + "/members/" + md5 ;
+					request(option, function(error, response, body){
+						var result = JSON.parse(body);
+						if(response.statusCode==200){
+							log(report.success + " Email " + hasils[1] + " Found");
+							log(report.info + " Name : " + result.merge_fields.MMERGE3 );
+							log(report.info + " Phone : " + result.merge_fields.MMERGE5 );
+							log(report.info + " Address : " + result.merge_fields.MMERGE6 );
+							log(report.info + " Birth Date : " + result.merge_fields.MMERGE4 );
+							perintah();
+						}else{
+							log(report.failed + " Email " + hasils[1] + " " + result.detail );
+							perintah();
+						}
+					});
+				}
 			}
 		}else if(hasils.length==3){
 			if(hasils[0].toString()=="list"){
@@ -162,7 +228,9 @@ function perintah(){
 					option.url = url;
 					request(option, function(error, response, body){
 						var result = JSON.parse(body);
-						log(report.success + "Connected to list f4db1367e8");
+						log(report.success + "Connected to list " + result.name + " with ID " + result.id);
+						lists.name = result.name;
+						lists.id = result.id;
 						idlecmd = '('+ process.env.CHIMP_API_USER +')\x1b[33m['+ lists.id +']\x1b[37m > \x1b[0m';
 						perintah();
 					});
@@ -197,7 +265,7 @@ function main(){
 	request("https://status.mailchimp.com/", function(error, response, body){
 		if(response.statusCode==200){
 			process.stdout.write(notification.success + '\n');
-			log(report.success + "Success Connected to Mailchimp");
+			//log(report.success + "Success Connected to Mailchimp");
 			connection=true;
 		}
 
@@ -207,7 +275,7 @@ function main(){
 			request(option, function(error, response, body){
 				if(response.statusCode==200){
 					process.stdout.write(notification.success + '\n');
-					log(report.success + "Success Authenticated to Mailchimp");
+					//log(report.success + "Success Authenticated to Mailchimp");
 					log(report.general + "Enjoy!");
 					perintah();
 				}
