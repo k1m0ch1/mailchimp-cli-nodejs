@@ -41,3 +41,59 @@ Infromation statistic about current list
 
 Back to the root position
 
+#### compare <full path file location>
+
+comparing list of member mailchimp with list of file json recommended json format object is `email`, `name`, `birthdate`, `phone`, `address` like example :
+
+command : `compare E:\\to\\file\\name.json` or `compare /home/k1m0ch1/filename.json`
+
+with content of file :
+
+```json
+{
+"RECORDS":[
+{
+"name":"Sheila Hana Ajijah",
+"email":"sheilaahana@gmail.com",
+"address":"Kota Cimahi",
+"birthdate":"1997\/7\/11",
+"phone":"082240667056"
+},
+{
+"name":"Sheila Hana Ajijah",
+"email":"debritzhana@gmail.com",
+"address":"Kota Cimahi",
+"birthdate":"1997\/7\/11",
+"phone":"082240667056"
+},
+{
+"name":"Galih Pratama",
+"email":"hanamura.iost@gmail.com",
+"address":"Jl. Nusa Sari Utara 1 No. 19 Perumahan Taman Citeureup",
+"birthdate":"1994\/12\/14",
+"phone":"085710104467"
+}
+]
+}
+```
+
+#### compare-add <full path file location>
+
+comparing list of member mailchimp with list of file json, if the email on json are not registered on lists, add a new email and subscribed, recommended json format object Parent `RECORDS` with filed `email`, `name`, `birthdate`, `phone`, `address` ( following like compare command )and the new member will be added with merge field 
+```json
+merge_field : {
+	MMERGE3 : list.name,
+	MMERGE4 : list.birthdate,
+	MMERGE5 : list.phone,
+	MMERGE6 : list.address
+}
+```
+## Bug
+
+- When using compare command after success the layout of output text will over by a newline
+- some command doesn't have a handler when on list position
+
+
+
+## To do
+

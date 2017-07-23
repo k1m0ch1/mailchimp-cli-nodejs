@@ -1,7 +1,6 @@
 require('dotenv').config()
 var request = require('request');
 var fs = require('fs');
-var config = require('E:\\Document\\Crowde\\listemail.json');
 var crypto = require('crypto');
 var sleep = require('system-sleep');
 
@@ -34,9 +33,10 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-function comparing(){
+function comparing(filename){
+	var config = require(filename);
 	config.RECORDS.forEach(function(list){
-		sleep(300);
+		sleep(350); //need to wait for 300 millisencod to 
 		var md5 = list.email!=null?crypto.createHash('md5').update(list.email).digest("hex"):"";
 		log(report.info + "Check email " + list.email);
 		option.url = process.env.CHIMP_API_URL + "f4db1367e8/members/" + md5 ;
@@ -68,17 +68,16 @@ function comparing(){
 									}
 								});
 				}else if(response.statusCode==200){
-					log(report.info + "Email" + list.email + " Terdaftar");
+					log(report.info + " Email" + list.email + " Terdaftar");
 				}
 		});
 	});
+	log(report.success + " Comparing Success");
+	perintah();
 }
 
 function perintah(){
 	rl.question(idlecmd, (hasil)=>{
-		if(hasil.toString()=="compare"){
-			setTimeout(comparing, 500);
-		}
 		hasils = hasil.split(" ");
 		if(hasils.length==1){
 			switch(hasil.toString()){
@@ -145,6 +144,12 @@ function perintah(){
 					perintah();
 					break;
 			}				
+		}else if(hasils.length==2){
+			if(hasils[0].toString()=="compare-add"){
+				comparing(hasils[1].toString());
+			}else if(hasils[0].toString()=="compare"){
+				comparing(hasils[1].toString());
+			}
 		}else if(hasils.length==3){
 			if(hasils[0].toString()=="list"){
 				if(hasils[1].toString()=="set"){
