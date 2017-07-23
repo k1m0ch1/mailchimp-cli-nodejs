@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/k1m0ch1/mailchimp-nodejs/issues"
   },
-  "homepage": "https://github.com/k1m0ch1/mailchimp-nodejs#readme"
+  "homepage": "https://github.com/k1m0ch1/mailchimp-nodejs#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "run-sequence": "^2.0.0"
+  }
 }
