@@ -68,6 +68,12 @@ function perintah(){
 					log(report.general + "Thanks for using this :D");
 					rl.close();
 					break;
+				case "back":
+					log(report.info + "Back to root state");
+					idlecmd = '('+ process.env.CHIMP_API_USER +')\x1b[37m > \x1b[0m';
+					lists = { id : '', name : ''};
+					perintah()
+					break;
 				default:
 					log(report.error + "Command Not found, try help");
 					perintah();
