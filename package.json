@@ -1,0 +1,19 @@
+{
+  "name": "mailchimp-nodejs",
+  "version": "1.0.0",
+  "description": "hack weekend",
+  "main": "compare-mail.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k1m0ch1/mailchimp-nodejs.git"
+  },
+  "author": "k1m0ch1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k1m0ch1/mailchimp-nodejs/issues"
+  },
+  "homepage": "https://github.com/k1m0ch1/mailchimp-nodejs#readme"
+}
