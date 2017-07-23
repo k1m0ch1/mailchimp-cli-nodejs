@@ -2,9 +2,12 @@
 
 Need to run by createing file `.env` with format list this :
 
+
+```file
 CHIMP_API_URL= <URL API>
 CHIMP_API_USER= <USER MAILCHIMP>
 CHIMP_API_KEY= <API KEY MAICHIMP>
+```
 
 
 
