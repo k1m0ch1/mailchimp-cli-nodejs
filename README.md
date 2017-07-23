@@ -25,7 +25,7 @@ After running the command `node run.js` and successfully connection and authenti
 
 Listing all available lists on the mailchimp, with format of ID and Name of the Lists, just type `lists` and enter.
 
-#### list set <id>
+#### list set `<id>`
 
 To explore the content of the lists, need to set the ID of lists first, with command `list set <id>` will return a new state as an ID lists 
 
@@ -49,9 +49,9 @@ Back to the root position
 
 #### members
 
-#### member <email>
+#### member `<email>`
 
-#### member <offset> <limit>
+#### member `<offset> <limit>`
 
 #### activity
 
@@ -59,7 +59,7 @@ Back to the root position
 
 #### locations
 
-#### compare <full path file location>
+#### compare `<full path file location>`
 
 comparing list of member mailchimp with list of file json recommended json format object is `email`, `name`, `birthdate`, `phone`, `address` like example :
 
@@ -95,7 +95,7 @@ with content of file :
 }
 ```
 
-#### compare-add <full path file location>
+#### compare-add `<full path file location>`
 
 comparing list of member mailchimp with list of file json, if the email on json are not registered on lists, add a new email and subscribed, recommended json format object Parent `RECORDS` with filed `email`, `name`, `birthdate`, `phone`, `address` ( following like compare command )and the new member will be added with merge field 
 ```json
