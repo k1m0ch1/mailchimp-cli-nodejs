@@ -1,5 +1,5 @@
 {
-  "name": "mailchimp-nodejs",
+  "name": "mailchimp-cli-nodejs",
   "version": "1.0.0",
   "description": "hack weekend",
   "main": "compare-mail.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/k1m0ch1/mailchimp-nodejs.git"
+    "url": "git+https://github.com/k1m0ch1/mailchimp-cli-nodejs.git"
   },
   "author": "k1m0ch1",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/k1m0ch1/mailchimp-nodejs/issues"
+    "url": "https://github.com/k1m0ch1/mailchimp-cli-nodejs.git"
   },
   "homepage": "https://github.com/k1m0ch1/mailchimp-nodejs#readme",
   "dependencies": {
