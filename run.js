@@ -36,8 +36,10 @@ const rl = readline.createInterface({
 
 function comparing(){
 	config.RECORDS.forEach(function(list){
-		sleep(100);
-		option.url = process.env.CHIMP_API_URL + "f4db1367e8/members/" + (list.email!=null?crypto.createHash('md5').update(list.email).digest("hex"):"");
+		sleep(300);
+		var md5 = list.email!=null?crypto.createHash('md5').update(list.email).digest("hex"):"";
+		log(report.info + "Check email " + list.email);
+		option.url = process.env.CHIMP_API_URL + "f4db1367e8/members/" + md5 ;
 		request(option, function(error, response, body){
 				if(response.statusCode!=200){
 					//var hasil = JSON.parse(body);
@@ -65,6 +67,8 @@ function comparing(){
 										log(report.failed, list.email + " " + hasil.detail);
 									}
 								});
+				}else if(response.statusCode==200){
+					log(report.info + "Email" + list.email + " Terdaftar");
 				}
 		});
 	});
