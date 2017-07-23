@@ -6,7 +6,7 @@ Need to run by creating config file `.env` with format :
 ```file
 CHIMP_API_URL= <URL API>
 CHIMP_API_USER= <USER MAILCHIMP>
-CHIMP_API_KEY= <API KEY MAICHIMP>
+CHIMP_API_KEY= <API KEY MAILCHIMP>
 ```
 
 
@@ -31,7 +31,7 @@ To explore the content of the lists, need to set the ID of lists first, with com
 
 #### exit
 
-State when you don't know what to do after starting the program (only foolish doing this), state when you in concious mind and trying to terminate the program while in state of an idle, state when you spill your coffee over your suit and blamming the coffee maker and sell it to , state when you realize you are typing `exiy`, state when you laying on the gorund while crying and rolling realize your deadline is 6 hour left, state when you are realize you are an ex-IT employee in some worst company, state when you open many of this program on many console on many host and many server and forget to terminate it, state when you complete reading this for nothing.
+State when you don't know what to do after starting the program (only foolish doing this), state when you in concious mind and trying to terminate the program while in state of an idle, state when you spill your coffee over your suit and blamming the coffee maker and sell it to your ex , state when you realize you are typing `exiy`, state when you laying on the gorund while crying and rolling realize your deadline is 6 hour left, state when you are realize you are an ex-IT employee in some worst company, state when you open many of this program on many console on many host and many server and forget to terminate it, state when you complete reading this for nothing.
 
 
 
