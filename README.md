@@ -47,6 +47,18 @@ Infromation statistic about current list
 
 Back to the root position
 
+#### members
+
+#### member <email>
+
+#### member <offset> <limit>
+
+#### activity
+
+#### clients
+
+#### locations
+
 #### compare <full path file location>
 
 comparing list of member mailchimp with list of file json recommended json format object is `email`, `name`, `birthdate`, `phone`, `address` like example :
