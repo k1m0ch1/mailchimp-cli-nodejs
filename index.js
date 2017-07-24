@@ -33,13 +33,13 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-function comparing(filename){
+function comparing(list_id, filename){
 	var config = require(filename);
 	config.RECORDS.forEach(function(list){
 		sleep(350); //need to wait for 300 millisencod to 
 		var md5 = list.email!=null?crypto.createHash('md5').update(list.email).digest("hex"):"";
 		log(report.info + "Check email " + list.email);
-		option.url = process.env.CHIMP_API_URL + "f4db1367e8/members/" + md5 ;
+		option.url = process.env.CHIMP_API_URL + list_id + "/members/" + md5 ;
 		request(option, function(error, response, body){
 				if(response.statusCode!=200){
 					//var hasil = JSON.parse(body);
@@ -56,7 +56,7 @@ function comparing(filename){
 									}
 					};
 					daftar = JSON.stringify(daftar);
-					request.post({url: process.env.CHIMP_API_URL + "f4db1367e8/members/", 
+					request.post({url: process.env.CHIMP_API_URL + list_id + "/members/", 
 								  headers : {'Authorization' : 'Basic ' + new Buffer(+ process.env.CHIMP_API_USER + ':' + process.env.CHIMP_API_KEY).toString('base64') },
 								  form : daftar
 								}, function(e,r,b){
@@ -199,9 +199,9 @@ function perintah(){
 			}				
 		}else if(hasils.length==2){
 			if(hasils[0].toString()=="compare-add"){
-				comparing(hasils[1].toString());
+				comparing(lists.id, hasils[1].toString());
 			}else if(hasils[0].toString()=="compare"){
-				comparing(hasils[1].toString());
+				comparing(lists.id, hasils[1].toString());
 			}else if(hasils[0].toString()=="member"){
 				if(hasils[1].split("@").length>1){
 					var md5 = crypto.createHash('md5').update(hasils[1].toString()).digest("hex");
