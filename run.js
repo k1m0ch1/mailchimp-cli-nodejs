@@ -87,8 +87,9 @@ function getLists(list_id, namef){
 	option.url = url;
 	request(option, function(e, r, b){
 		result = JSON.parse(b);
-		return result;
 	});	
+	sleep(350);
+	return result;
 }
 
 function perintah(){
@@ -96,6 +97,9 @@ function perintah(){
 		hasils = hasil.split(" ");
 		if(hasils.length==1){
 			switch(hasil.toString()){
+				case "help":
+					log("");
+					break;
 				case "lists":
 					request(option, function(error, response, body){
 						var hasil = JSON.parse(body);
@@ -150,26 +154,24 @@ function perintah(){
 					break;
 				case "clients":
 					if(lists.id!=''){
-						url = process.env.CHIMP_API_URL + lists.id + "/clients";
-						option.url = url;
-						request(option, function(error, response, body){
-							var result = JSON.parse(body);
-							log(result);
-							perintah();
+						var results = getLists(lists.id, "clients");
+						log(report.success + "Getting data top 10 email client");
+						results.clients.forEach(function(list){
+							log(report.info + list.client + " " + list.members + " members");
 						});
+						perintah()
 					}else{
 						cmdnf();
 					}
 					break;
 				case "locations":
 					if(lists.id!=''){
-						url = process.env.CHIMP_API_URL + lists.id + "/locations";
-						option.url = url;
-						request(option, function(error, response, body){
-							var result = JSON.parse(body);
-							log(result);
-							perintah();
+						var results = getLists(lists.id, "locations");
+						log(report.success + "Getting data top 10 email location");
+						results.locations.forEach(function(list){
+							log(report.info + list.country + " " + list.percent + "% => " + list.total + " members");
 						});
+						perintah()
 					}else{
 						cmdnf();
 					}
@@ -231,6 +233,10 @@ function perintah(){
 						log(report.success + "Connected to list " + result.name + " with ID " + result.id);
 						lists.name = result.name;
 						lists.id = result.id;
+						log(report.general + "=========================================");
+						log(report.general + "Company name = " + result.contact.company);
+						log(report.general + "Member Stats = " + result.stats.member_count);
+						log(report.general + "=========================================");
 						idlecmd = '('+ process.env.CHIMP_API_USER +')\x1b[33m['+ lists.id +']\x1b[37m > \x1b[0m';
 						perintah();
 					});
